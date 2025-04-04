@@ -2,7 +2,7 @@ import PostMemory from "../modals/postMemory.js";
 
 export const getMemories = async (req, res) => {
   try {
-    const memories = await PostMemory.find();
+    const memories = await PostMemory.find().sort({ createdAt: -1 });
 
     res.status(200).json(memories);
   } catch (error) {
@@ -11,6 +11,15 @@ export const getMemories = async (req, res) => {
 };
 
 export const postMemories = async (req, res) => {
+  const postDetails = req.body;
+
   try {
-  } catch (error) {}
+    const newMemory = new PostMemory({ ...postDetails });
+
+    await newMemory.save();
+
+    res.status(201).json(newMemory);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
 };

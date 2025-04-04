@@ -21,6 +21,8 @@ import { onFileChange } from "@/lib/utils";
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { postMemory } from "@/lib/actions";
+import { redirect } from "next/navigation";
 
 const AddMemory = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -29,10 +31,6 @@ const AddMemory = () => {
     resolver: zodResolver(memorySchema),
     defaultValues: { title: "", description: "", image: "" },
   });
-
-  const onSubmit = (values: z.infer<typeof memorySchema>) => {
-    console.log(values);
-  };
 
   const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { setValue, setError } = form;
@@ -55,6 +53,14 @@ const AddMemory = () => {
 
     resetField("image");
     setImage(null);
+  };
+
+  const onSubmit = async (values: z.infer<typeof memorySchema>) => {
+    const newValues = { ...values, author: "Luka" };
+
+    const res = await postMemory(newValues);
+
+    if (res === "SUCCESS") redirect("/");
   };
 
   return (
@@ -80,10 +86,13 @@ const AddMemory = () => {
           <>
             <label
               htmlFor="image"
-              className="w-full flex justify-center items-center max-w-[600px] aspect-video mx-auto border border-dashed border-green rounded-md cursor-pointer"
+              className={`w-full flex justify-center items-center max-w-[600px] aspect-video mx-auto border border-dashed ${
+                form.formState.errors.image ? "border-red-500" : "border-green"
+              } rounded-md cursor-pointer`}
             >
               <IoIosAddCircleOutline className="text-4xl text-green" />
             </label>
+
             <input
               type="file"
               accept="image/*"
@@ -105,7 +114,7 @@ const AddMemory = () => {
                 <Input
                   {...field}
                   className={`!ring-0  text-gray-600 ${
-                    form.getFieldState("title").error
+                    form.formState.errors.title
                       ? "border-red-500"
                       : "border-gray-600"
                   }`}
@@ -130,7 +139,7 @@ const AddMemory = () => {
                 <Textarea
                   {...field}
                   className={`!ring-0  text-gray-600 resize-none h-30 ${
-                    form.getFieldState("description").error
+                    form.formState.errors.description
                       ? "border-red-500"
                       : "border-gray-600"
                   }`}

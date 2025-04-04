@@ -6,6 +6,7 @@ const postMemory = mongoose.Schema({
   image: String,
   likeCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: new Date() },
+  author: String,
 });
 
 const PostMemory = mongoose.model("PostMemory", postMemory);
