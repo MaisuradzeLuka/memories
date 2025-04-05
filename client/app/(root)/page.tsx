@@ -1,7 +1,9 @@
 import { fetchData } from "@/lib/actions";
 import { getRelativeTime } from "@/lib/utils";
 import { MemoryType } from "@/types";
+import { FaShare } from "react-icons/fa";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
   const memories: MemoryType[] = await fetchData("/posts");
@@ -17,7 +19,10 @@ export default async function Home() {
         </h2>
 
         <div className="flex flex-col lg:flex-row justify-center gap-8 mx-auto max-w-[1440px]">
-          <div className="relative w-full group overflow-hidden">
+          <Link
+            href={`/memories/${newestMemories[0]._id}`}
+            className="relative w-full group overflow-hidden cursor-pointer"
+          >
             <Image
               src={newestMemories[0].image}
               alt="blog image"
@@ -38,10 +43,13 @@ export default async function Home() {
                 {getRelativeTime(newestMemories[0].createdAt)}
               </p>
             </div>
-          </div>
+          </Link>
 
           <div className="w-full lg:w-2/3 ">
-            <div className="relative w-full mb-4 group overflow-hidden">
+            <Link
+              href={`/memories/${newestMemories[1]._id}`}
+              className="relative block w-full mb-4 group overflow-hidden"
+            >
               <Image
                 src={newestMemories[1].image}
                 alt="blog image"
@@ -61,9 +69,12 @@ export default async function Home() {
                   {getRelativeTime(newestMemories[1].createdAt)}
                 </p>
               </div>
-            </div>
+            </Link>
 
-            <div className="relative w-full group overflow-hidden">
+            <Link
+              href={`/memories/${newestMemories[2]._id}`}
+              className="relative block w-full group overflow-hidden"
+            >
               <Image
                 src={newestMemories[2].image}
                 alt="blog image"
@@ -83,10 +94,11 @@ export default async function Home() {
                   {getRelativeTime(newestMemories[2].createdAt)}
                 </p>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
+
       <section className="w-full max-w-[1440px] mx-auto px-6 py-16">
         <h2 className=" text-center w-max text-3xl sm:text-5xl font-bold text-green mx-auto mb-16 mt-4">
           In Case You Missed It
@@ -108,9 +120,22 @@ export default async function Home() {
                   <h3 className="font-medium text-md lg:text-xl">
                     {memory.title}
                   </h3>
-                  <p className="text-gray-500 font-medium">
-                    {memory.author} - {getRelativeTime(memory.createdAt)}
-                  </p>
+
+                  <div className="flex justify-between items-center">
+                    <p className="text-gray-500 font-medium">
+                      {memory.author} - {getRelativeTime(memory.createdAt)}
+                    </p>
+
+                    <Link
+                      href={`/memories/${memory._id}`}
+                      className="flex items-center gap-1 text-green text-sm cursor-pointer"
+                    >
+                      Details
+                      <span>
+                        <FaShare />
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               </div>
 

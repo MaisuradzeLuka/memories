@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import Navbar from "@/components/shared/Navbar";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: "Memories",
@@ -15,8 +14,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <Navbar />
-        <main className="mt-20">{children}</main>
+        <main className="flex justify-center items-center h-screen bg-[#161B22]">
+          {children}
+        </main>
       </body>
     </html>
   );

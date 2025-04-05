@@ -29,3 +29,7 @@ export const fetchData = async (additionalUrl: string) => {
     throw new Error(`Something went wrong: ${error.message}`);
   }
 };
+
+export const signInUpUser = async () => {
+  console.log("#");
+};
