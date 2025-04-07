@@ -6,4 +6,5 @@ export type BtnType = {
   classname?: string;
   onClick?: (arg0: any) => any;
   type?: "button" | "submit" | "reset";
+  dissabled?: boolean;
 };

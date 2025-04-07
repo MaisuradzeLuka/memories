@@ -1,9 +1,17 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 
 const Navbar = () => {
-  const isLoggedIn = false;
+  const user = sessionStorage.getItem("user");
+  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem("token"));
+
+  const onClick = () => {
+    sessionStorage.clear();
+    setIsLoggedIn("");
+  };
 
   return (
     <nav className="flex justify-between py-5 px-10 ">
@@ -17,7 +25,7 @@ const Navbar = () => {
         </Link>
 
         {isLoggedIn ? (
-          <div>Sign out</div>
+          <button onClick={onClick}>Sign out</button>
         ) : (
           <Link href="/signin" className=" text-lg hover:text-green transition">
             Sign In

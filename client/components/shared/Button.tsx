@@ -6,6 +6,7 @@ const Button = ({
   classname,
   type = "button",
   onClick,
+  dissabled = false,
 }: BtnType) => {
   const btnStyles =
     variant === "outline"
@@ -15,8 +16,9 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`border py-2 px-3 cursor-pointer rounded-lg text-[16px] transition ${btnStyles} ${classname}`}
+      className={`border py-2 px-3 cursor-pointer rounded-lg text-[16px] transition ${btnStyles} ${classname} `}
       onClick={onClick}
+      disabled={dissabled}
     >
       {children}
     </button>

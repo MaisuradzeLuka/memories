@@ -1,14 +1,21 @@
 "use client";
 
 import Button from "@/components/shared/Button";
+import { signInUpUser } from "@/lib/actions";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { ChangeEvent, FormEvent, useState } from "react";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Page = () => {
+  const router = useRouter();
+
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const validate = () => {
     const newErrors = { email: "", password: "" };
@@ -36,8 +43,27 @@ const Page = () => {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (validate()) {
-      console.log("gg");
+      setIsLoading(true);
+
+      const res = await signInUpUser(form, "signin");
+
+      if (res.type === "error") setErrorMessage(res.data);
+
+      if (res.type === "success") {
+        sessionStorage.setItem("token", JSON.stringify(res.data.token));
+
+        const { email, _id, name, lastname } = res.data.result;
+
+        sessionStorage.setItem(
+          "user",
+          JSON.stringify({ email, _id, name, lastname })
+        );
+        router.push("/");
+      }
+
+      setIsLoading(false);
     }
   };
 
@@ -94,6 +120,10 @@ const Page = () => {
         {errors.password && <p>{errors.password}</p>}
       </div>
 
+      {errorMessage && (
+        <p className="mt-6 text-sm text-red-500">{errorMessage}</p>
+      )}
+
       <p className="mt-6 text-sm">
         Don't have an account?{" "}
         <Link href="/signup" className="text-blue-500">
@@ -105,8 +135,9 @@ const Page = () => {
         type="submit"
         variant="outline"
         classname="w-full mt-8 !bg-[#161B22] border-none text-white"
+        dissabled={isLoading}
       >
-        Sign In
+        {isLoading ? "Loading..." : "Sign In"}
       </Button>
     </form>
   );

@@ -1,4 +1,4 @@
-import { PostMemoryType } from "@/types";
+import { PostMemoryType, SignInFormType, SignUpFormType } from "@/types";
 
 export const postMemory = async (body: PostMemoryType) => {
   try {
@@ -30,6 +30,27 @@ export const fetchData = async (additionalUrl: string) => {
   }
 };
 
-export const signInUpUser = async () => {
-  console.log("#");
+export const signInUpUser = async (
+  formData: SignUpFormType | SignInFormType,
+  additionalUrl: string
+) => {
+  try {
+    const res = await fetch(`http://localhost:5000/users/${additionalUrl}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+
+    if (res.status !== 200 && res.status !== 201) {
+      return { type: "error", data: data.message };
+    }
+
+    return { type: "success", data };
+  } catch (error: any) {
+    throw new Error(`Couldn't sing up user: ${error.message}`);
+  }
 };

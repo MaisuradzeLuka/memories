@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import MemoryRouter from "./routes/posts.js";
+import UsersRouter from "./routes/users.js";
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use("/posts", MemoryRouter);
+app.use("/users", UsersRouter);
 
 mongoose
   .connect(

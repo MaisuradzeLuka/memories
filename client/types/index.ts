@@ -14,3 +14,15 @@ export type MemoryType = {
   title: string;
   _id: string;
 };
+
+export type SignUpFormType = {
+  name: string;
+  lastname: string;
+  email: string;
+  password: string;
+};
+
+export type SignInFormType = {
+  email: string;
+  password: string;
+};
