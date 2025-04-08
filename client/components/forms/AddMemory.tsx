@@ -22,10 +22,17 @@ import Image from "next/image";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { postMemory } from "@/lib/actions";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 const AddMemory = () => {
+  const router = useRouter();
+
+  if (!sessionStorage.getItem("token")) router.push("/signin");
+
+  const { _id: id } = JSON.parse(sessionStorage.getItem("user") || "");
+
   const [image, setImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof memorySchema>>({
     resolver: zodResolver(memorySchema),
@@ -56,7 +63,7 @@ const AddMemory = () => {
   };
 
   const onSubmit = async (values: z.infer<typeof memorySchema>) => {
-    const newValues = { ...values, author: "Luka" };
+    const newValues = { ...values, author: id };
 
     const res = await postMemory(newValues);
 
@@ -151,8 +158,13 @@ const AddMemory = () => {
           )}
         />
 
-        <Button variant="filled" type="submit" classname="w-max self-end">
-          Add Memory
+        <Button
+          variant="filled"
+          type="submit"
+          dissabled={isLoading}
+          classname="w-max self-end"
+        >
+          {isLoading ? "Loading..." : "Add Memory"}
         </Button>
       </form>
     </Form>

@@ -6,7 +6,7 @@ export type PostMemoryType = z.infer<typeof memorySchema> & {
 };
 
 export type MemoryType = {
-  author: string;
+  author: { _id: string; name: string; lastname: string };
   createdAt: string;
   likeCount: number;
   image: string;
@@ -25,4 +25,10 @@ export type SignUpFormType = {
 export type SignInFormType = {
   email: string;
   password: string;
+};
+
+export type UserType = {
+  email: string;
+  name: string;
+  lastname: string;
 };

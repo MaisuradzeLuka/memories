@@ -39,7 +39,8 @@ export default async function Home() {
               </h3>
 
               <p className="text-gray-500 text-lg font-medium mt-2">
-                {newestMemories[0].author} -{" "}
+                {newestMemories[0].author.name}{" "}
+                {newestMemories[0].author.lastname} -{" "}
                 {getRelativeTime(newestMemories[0].createdAt)}
               </p>
             </div>
@@ -65,7 +66,8 @@ export default async function Home() {
                 </h3>
 
                 <p className="text-gray-500 text-lg font-medium mt-2">
-                  {newestMemories[1].author} -{" "}
+                  {newestMemories[1].author.name}{" "}
+                  {newestMemories[1].author.lastname} -{" "}
                   {getRelativeTime(newestMemories[1].createdAt)}
                 </p>
               </div>
@@ -90,7 +92,8 @@ export default async function Home() {
                 </h3>
 
                 <p className="text-gray-500 text-lg font-medium mt-2">
-                  {newestMemories[2].author} -{" "}
+                  {newestMemories[2].author.name}{" "}
+                  {newestMemories[2].author.lastname} -{" "}
                   {getRelativeTime(newestMemories[2].createdAt)}
                 </p>
               </div>
@@ -123,7 +126,8 @@ export default async function Home() {
 
                   <div className="flex justify-between items-center">
                     <p className="text-gray-500 font-medium">
-                      {memory.author} - {getRelativeTime(memory.createdAt)}
+                      {memory.author.name} {memory.author.lastname} -{" "}
+                      {getRelativeTime(memory.createdAt)}
                     </p>
 
                     <Link

@@ -2,7 +2,9 @@ import PostMemory from "../modals/postMemory.js";
 
 export const getMemories = async (req, res) => {
   try {
-    const memories = await PostMemory.find().sort({ createdAt: -1 });
+    const memories = await PostMemory.find()
+      .populate("author")
+      .sort({ createdAt: -1 });
 
     res.status(200).json(memories);
   } catch (error) {
