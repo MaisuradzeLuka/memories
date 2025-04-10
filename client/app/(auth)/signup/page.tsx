@@ -84,7 +84,7 @@ const page = () => {
           JSON.stringify({ email, _id, name, lastname })
         );
 
-        router.push("/");
+        router.push("/onboarding");
       }
 
       setIsLoading(false);

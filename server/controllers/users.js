@@ -62,3 +62,34 @@ export const singupUser = async (req, res) => {
     throw new Error(`Coudln't sign up user: ${error.message}`);
   }
 };
+
+export const updateUser = async (req, res) => {
+  try {
+    // console.log(req.userId);
+
+    res.status(201).json({ message: "User updated succesfully" });
+  } catch (error) {
+    res.status(400).json({ message: "Couelnt update user" });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    if (!userId) res.status(403).json({ message: "Unauthorized" });
+
+    const user = await User.findOne({ _id: userId });
+
+    res.status(200).json({
+      email: user.email,
+      name: user.name,
+      lastname: user.lastname,
+      userId: user._id,
+      bio: user.bio,
+      avatar: user.avatar,
+    });
+  } catch (error) {
+    res.status(400).json({ message: "Couldn't find the user" });
+  }
+};

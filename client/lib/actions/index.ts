@@ -22,6 +22,11 @@ export const fetchData = async (additionalUrl: string) => {
   try {
     const res = await fetch(`${process.env.NEXT_API_URL}${additionalUrl}`);
 
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`HTTP error! ${res.status}: ${errorText}`);
+    }
+
     const data = await res.json();
 
     return data;
@@ -43,6 +48,11 @@ export const signInUpUser = async (
       body: JSON.stringify(formData),
     });
 
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`HTTP error! ${res.status}: ${errorText}`);
+    }
+
     const data = await res.json();
 
     if (res.status !== 200 && res.status !== 201) {
@@ -52,5 +62,51 @@ export const signInUpUser = async (
     return { type: "success", data };
   } catch (error: any) {
     throw new Error(`Couldn't sing up user: ${error.message}`);
+  }
+};
+
+export const updateUser = async (body: any, token: string | null) => {
+  try {
+    const res = await fetch("http://localhost:5000/users/onboarding", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`HTTP error! ${res.status}: ${errorText}`);
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error: any) {
+    throw new Error(`Something went wrong: ${error.message}`);
+  }
+};
+
+export const getUser = async (token: string | null) => {
+  try {
+    const res = await fetch("http://localhost:5000/users", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`HTTP error! ${res.status}: ${errorText}`);
+    }
+
+    const data = await res.json();
+
+    return data;
+  } catch (error: any) {
+    throw new Error(`Coudln't fetch the user: ${error.message}`);
   }
 };

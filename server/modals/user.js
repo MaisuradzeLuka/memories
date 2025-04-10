@@ -5,6 +5,12 @@ const userSchema = mongoose.Schema({
   lastname: String,
   email: String,
   password: String,
+  avatar: {
+    type: String,
+    required: false,
+    default: "/static/images/default-avatar.jpg",
+  },
+  bio: { type: String, required: false },
 });
 
 const user = mongoose.model("User", userSchema);
