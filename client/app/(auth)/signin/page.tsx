@@ -49,6 +49,8 @@ const Page = () => {
 
       const res = await signInUpUser(form, "signin");
 
+      console.log(res);
+
       if (res.type === "error") setErrorMessage(res.data);
 
       if (res.type === "success") {

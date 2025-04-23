@@ -4,17 +4,27 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
 export const onFileChange = (file: File | undefined) => {
   return new Promise((resolve, reject) => {
     if (file) {
+      const maxSizeInBytes = 500 * 1024;
+
+      if (file.size > maxSizeInBytes) {
+        reject("File size exceeds 500KB limit.");
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
         resolve(base64String);
       };
+
       reader.onerror = (error) => {
         reject(error);
       };
+
       reader.readAsDataURL(file);
     } else {
       resolve(null);

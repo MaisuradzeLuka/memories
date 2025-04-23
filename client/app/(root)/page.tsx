@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
-  const memories: MemoryType[] = await fetchData("/posts");
+  const memories: MemoryType[] = (await fetchData("/posts")).props.data;
 
   const newestMemories = memories.slice(0, 3);
   const restOfMeories = memories.slice(3);

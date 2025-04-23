@@ -30,8 +30,6 @@ const Navbar = () => {
         const existingUser = async () => {
           const user = await getUser(token);
 
-          console.log(user);
-
           setUser(user);
         };
 
@@ -76,7 +74,7 @@ const Navbar = () => {
                 alt="user avatar"
                 height={40}
                 width={40}
-                className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black"
+                className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black object-cover"
               />
 
               <span className="font-normal">
@@ -124,7 +122,7 @@ const Navbar = () => {
                 alt="user avatar"
                 height={40}
                 width={40}
-                className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black"
+                className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black object-cover"
               />
 
               <span className="font-normal">

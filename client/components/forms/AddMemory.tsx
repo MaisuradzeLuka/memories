@@ -55,6 +55,17 @@ const AddMemory = () => {
     const imageFile = e.target.files?.[0];
 
     if (imageFile) {
+      if (imageFile.size > 600 * 1024) {
+        form.setError("image", {
+          type: "custom",
+          message: "ფოტოს ზომა აღემატება 600 კილობაიტს",
+        });
+
+        return;
+      }
+    }
+
+    if (imageFile) {
       const result = await onFileChange(imageFile);
 
       if (result) {
@@ -114,6 +125,10 @@ const AddMemory = () => {
             >
               <IoIosAddCircleOutline className="text-4xl text-green" />
             </label>
+
+            {form.formState.errors.image?.type === "custom" && (
+              <p className="text-red-500">Image can not be larger than 500kb</p>
+            )}
 
             <input
               type="file"
