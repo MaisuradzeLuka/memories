@@ -20,7 +20,9 @@ export const postMemory = async (body: PostMemoryType) => {
 
 export const fetchData = async (additionalUrl: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_API_URL}${additionalUrl}`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}${additionalUrl}`
+    );
 
     if (!res.ok) {
       const errorText = await res.text();
@@ -40,13 +42,16 @@ export const signInUpUser = async (
   additionalUrl: string
 ) => {
   try {
-    const res = await fetch(`http://localhost:5000/users/${additionalUrl}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${additionalUrl}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     if (!res.ok) {
       const errorText = await res.text();
@@ -67,14 +72,17 @@ export const signInUpUser = async (
 
 export const updateUser = async (body: any, token: string | null) => {
   try {
-    const res = await fetch("http://localhost:5000/users/onboarding", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/onboarding`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
 
     if (!res.ok) {
       const errorText = await res.text();
@@ -82,6 +90,7 @@ export const updateUser = async (body: any, token: string | null) => {
     }
 
     const data = await res.json();
+
     return data;
   } catch (error: any) {
     throw new Error(`Something went wrong: ${error.message}`);
@@ -90,7 +99,7 @@ export const updateUser = async (body: any, token: string | null) => {
 
 export const getUser = async (token: string | null) => {
   try {
-    const res = await fetch("http://localhost:5000/users", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

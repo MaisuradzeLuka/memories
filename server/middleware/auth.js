@@ -10,6 +10,6 @@ export const auth = async (req, res, next) => {
 
     next();
   } catch (error) {
-    throw new error(`Authentification failed: ${error}`);
+    console.log(error);
   }
 };

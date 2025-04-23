@@ -14,18 +14,28 @@ import {
 import { RxHamburgerMenu } from "react-icons/rx";
 import { PiUserCircleLight, PiUserCircleFill } from "react-icons/pi";
 import { UserType } from "@/types";
+import { getUser } from "@/lib/actions";
+import Image from "next/image";
 
 const Navbar = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<string | null>(null);
 
   useEffect(() => {
-    const userData = sessionStorage.getItem("user");
-    const token = sessionStorage.getItem("token");
+    const storedToken = sessionStorage.getItem("token");
+    const token = storedToken ? JSON.parse(storedToken) : null;
 
-    if (userData) {
+    if (token) {
       try {
-        setUser(JSON.parse(userData) as UserType);
+        const existingUser = async () => {
+          const user = await getUser(token);
+
+          console.log(user);
+
+          setUser(user);
+        };
+
+        existingUser();
       } catch (err) {
         console.error("Error parsing user data:", err);
       }
@@ -35,9 +45,11 @@ const Navbar = () => {
       setIsLoggedIn(token);
     }
   }, []);
+
   const onClick = () => {
     sessionStorage.clear();
     setIsLoggedIn("");
+    setUser(null);
   };
 
   return (
@@ -49,10 +61,23 @@ const Navbar = () => {
       <div className="hidden items-center gap-4 sm:flex">
         {isLoggedIn ? (
           <div className="flex items-center gap-4 ml-2">
+            <Link href="/addmemory">
+              <Button
+                variant="outline"
+                classname="border-none !bg-transparent text-white hover:!text-green !p-0"
+              >
+                Add Memory
+              </Button>
+            </Link>
+
             <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black">
-                {user?.name.slice(0, 1)}
-              </span>
+              <Image
+                src={user?.avatar || "/assets/placeholder_avatar.jpg"}
+                alt="user avatar"
+                height={40}
+                width={40}
+                className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black"
+              />
 
               <span className="font-normal">
                 {user?.name} {user?.lastname}
@@ -94,9 +119,13 @@ const Navbar = () => {
 
           <DropdownMenuContent className="flex flex-col items-center bg-white mr-6 py-3 border-none shadow shadow-black">
             <DropdownMenuLabel className="flex flex-col items-center gap-3">
-              <span className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black">
-                {user?.name.slice(0, 1)}
-              </span>
+              <Image
+                src={user?.avatar || "/assets/placeholder_avatar.jpg"}
+                alt="user avatar"
+                height={40}
+                width={40}
+                className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black"
+              />
 
               <span className="font-normal">
                 {user?.name} {user?.lastname}

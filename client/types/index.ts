@@ -31,4 +31,6 @@ export type UserType = {
   email: string;
   name: string;
   lastname: string;
+  avatar: string;
+  bio: string;
 };

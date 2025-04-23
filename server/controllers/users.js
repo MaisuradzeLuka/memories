@@ -29,7 +29,6 @@ export const singinUser = async (req, res) => {
 
     return res.status(200).json({ result: existingUser, token });
   } catch (error) {
-    console.error("Signin error:", error);
     return res
       .status(500)
       .json({ message: `Couldn't sign in user: ${error.message}` });
@@ -64,10 +63,16 @@ export const singupUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  try {
-    // console.log(req.userId);
+  const user = req.body;
 
-    res.status(201).json({ message: "User updated succesfully" });
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.userId },
+      { ...user },
+      { new: true }
+    );
+
+    res.status(201).json(updatedUser);
   } catch (error) {
     res.status(400).json({ message: "Couelnt update user" });
   }

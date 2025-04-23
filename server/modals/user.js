@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
   avatar: {
     type: String,
     required: false,
-    default: "/static/images/default-avatar.jpg",
+    default: "/assets/placeholder_avatar.jpg",
   },
   bio: { type: String, required: false },
 });

@@ -63,10 +63,12 @@ const AddMemory = () => {
   };
 
   const onSubmit = async (values: z.infer<typeof memorySchema>) => {
+    setIsLoading(true);
     const newValues = { ...values, author: id };
 
     const res = await postMemory(newValues);
 
+    setIsLoading(false);
     if (res === "SUCCESS") redirect("/");
   };
 

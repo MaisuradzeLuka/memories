@@ -27,11 +27,18 @@ import { z } from "zod";
 const Page = () => {
   const router = useRouter();
 
-  const [avatar, setAvatar] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [defaultUser, setDefaultUser] = useState({});
-
   const [token, setToken] = useState<string | null>(null);
+
+  const form = useForm<z.infer<typeof updateUserSchema>>({
+    resolver: zodResolver(updateUserSchema),
+    defaultValues: {
+      name: "",
+      lastname: "",
+      bio: "",
+      avatar: "/assets/placeholder_avatar.jpg",
+    },
+  });
 
   useEffect(() => {
     const storedToken = sessionStorage.getItem("token");
@@ -42,23 +49,21 @@ const Page = () => {
     if (!token) return;
 
     const fetchUser = async () => {
-      const user = await getUser(token);
-
-      setDefaultUser(user);
+      try {
+        const user = await getUser(token);
+        form.reset({
+          name: user.name || "",
+          lastname: user.lastname || "",
+          bio: user.bio || "",
+          avatar: user.avatar || "/assets/placeholder_avatar.jpg",
+        });
+      } catch (error: any) {
+        throw new Error("Failed to fetch user", error);
+      }
     };
 
     fetchUser();
-  }, [token]);
-
-  const form = useForm<z.infer<typeof updateUserSchema>>({
-    resolver: zodResolver(updateUserSchema),
-    defaultValues: {
-      name: defaultUser.name || "",
-      lastname: defaultUser.lastname || "",
-      bio: defaultUser.bio || "",
-      avatar: defaultUser.avatar || "/assets/placeholder_avatar.jpg",
-    },
-  });
+  }, [token, form.reset]);
 
   const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { setValue, setError } = form;
@@ -68,7 +73,6 @@ const Page = () => {
       const result = await onFileChange(imageFile);
 
       if (result) {
-        setAvatar(result as string);
         setValue("avatar", result as string, { shouldValidate: true });
       } else {
         setError("avatar", { message: "Couldn't upload image" });
@@ -76,18 +80,11 @@ const Page = () => {
     }
   };
 
-  const onDelete = () => {
-    const { resetField } = form;
-
-    resetField("avatar");
-    setAvatar(null);
-  };
-
-  const onSubmit = async () => {
+  const onSubmit = async (values: z.infer<typeof updateUserSchema>) => {
     setIsLoading(true);
-    const res = await updateUser({ name: "name" }, token);
+    const res = await updateUser(values, token);
 
-    console.log(res);
+    if (res) router.push("/");
 
     setIsLoading(false);
   };
@@ -207,14 +204,15 @@ const Page = () => {
           {isLoading ? "Loading..." : "Sign In"}
         </Button>
 
-        <Button
-          type="button"
-          variant="outline"
-          classname="w-full mt-3 !bg-[#161B22] border-none text-white"
-          onClick={() => router.push("/")}
-        >
-          Skip
-        </Button>
+        <Link href="/">
+          <Button
+            type="button"
+            variant="outline"
+            classname="w-full mt-3 !bg-[#161B22] border-none text-white"
+          >
+            Skip
+          </Button>
+        </Link>
       </form>
     </Form>
   );
