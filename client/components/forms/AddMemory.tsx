@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -26,13 +26,24 @@ import { redirect, useRouter } from "next/navigation";
 
 const AddMemory = () => {
   const router = useRouter();
-
-  if (!sessionStorage.getItem("token")) router.push("/signin");
-
-  const { _id: id } = JSON.parse(sessionStorage.getItem("user") || "");
-
+  const [token, setToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    const user = sessionStorage.getItem("user");
+
+    if (!token || !user) {
+      router.push("/signin");
+      return;
+    }
+
+    setToken(token);
+    const parsedUser = JSON.parse(user);
+    setUserId(parsedUser._id);
+  }, [router]);
 
   const form = useForm<z.infer<typeof memorySchema>>({
     resolver: zodResolver(memorySchema),
@@ -64,13 +75,15 @@ const AddMemory = () => {
 
   const onSubmit = async (values: z.infer<typeof memorySchema>) => {
     setIsLoading(true);
-    const newValues = { ...values, author: id };
+    const newValues = { ...values, author: userId };
 
     const res = await postMemory(newValues);
 
     setIsLoading(false);
     if (res === "SUCCESS") redirect("/");
   };
+
+  if (!token || !userId) return <p>Loading...</p>;
 
   return (
     <Form {...form}>
