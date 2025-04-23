@@ -2,7 +2,7 @@ import { PostMemoryType, SignInFormType, SignUpFormType } from "@/types";
 
 export const postMemory = async (body: PostMemoryType) => {
   try {
-    const res = await fetch("http://localhost:5000/posts", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
