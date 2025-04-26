@@ -44,12 +44,6 @@ const Navbar = () => {
     }
   }, []);
 
-  const onClick = () => {
-    sessionStorage.clear();
-    setIsLoggedIn("");
-    setUser(null);
-  };
-
   return (
     <nav className="flex justify-between py-5 px-10 bg-[#212623] text-white">
       <h1 className=" text-4xl font-semibold cursor-pointer ">
@@ -58,7 +52,7 @@ const Navbar = () => {
 
       <div className="hidden items-center gap-4 sm:flex">
         {isLoggedIn ? (
-          <div className="flex items-center gap-4 ml-2">
+          <div className="flex items-center gap-4 ml-2 text-xs l">
             <Link href="/addmemory">
               <Button
                 variant="outline"
@@ -68,26 +62,20 @@ const Navbar = () => {
               </Button>
             </Link>
 
-            <div className="flex items-center gap-2">
+            <Link
+              href="/myaccount"
+              className="flex items-center gap-2 border border-white rounded-full px-4 py-2 hover:bg-white hover:text-[#212623] transition"
+            >
               <Image
                 src={user?.avatar || "/assets/placeholder_avatar.jpg"}
                 alt="user avatar"
-                height={40}
-                width={40}
-                className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black object-cover"
+                height={20}
+                width={20}
+                className="flex items-center justify-center bg-green rounded-full text-white w-6 h-6 border-[1px] border-black object-cover"
               />
 
-              <span className="font-normal">
-                {user?.name} {user?.lastname}
-              </span>
-            </div>
-
-            <button
-              onClick={onClick}
-              className="border border-transparent hover:border-red-500 hover:text-red-500 rounded-full px-3 py-[6px] transition"
-            >
-              Sign out
-            </button>
+              <span className="font-normal">Hi, {user?.name}</span>
+            </Link>
           </div>
         ) : (
           <div>
@@ -116,19 +104,27 @@ const Navbar = () => {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="flex flex-col items-center bg-white mr-6 py-3 border-none shadow shadow-black">
-            <DropdownMenuLabel className="flex flex-col items-center gap-3">
-              <Image
-                src={user?.avatar || "/assets/placeholder_avatar.jpg"}
-                alt="user avatar"
-                height={40}
-                width={40}
-                className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px] border-black object-cover"
-              />
+            <DropdownMenuItem>
+              <Link href="/myaccount">
+                <Image
+                  src={user?.avatar || "/assets/placeholder_avatar.jpg"}
+                  alt="user avatar"
+                  height={40}
+                  width={40}
+                  className="flex items-center justify-center bg-green rounded-full text-white w-10 h-10 border-[1px]  border-black object-cover"
+                />
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
 
-              <span className="font-normal">
-                {user?.name} {user?.lastname}
-              </span>
-            </DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link
+                href="/myaccount"
+                className="flex items-center gap-2 border border-[#212623] rounded-full px-4 py-2 text-md hover:bg-[#212623] hover:text-white transition"
+              >
+                <span className="font-normal">Hi, {user?.name}</span>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
 
             <DropdownMenuItem>
@@ -137,10 +133,6 @@ const Navbar = () => {
                   Add Memory
                 </Button>
               </Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="text-md cursor-pointer border border-white rounded-full hover:border-red-500 hover:text-red-500 transition px-4">
-              <button onClick={onClick}>Sign out</button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
