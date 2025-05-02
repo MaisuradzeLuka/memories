@@ -1,7 +1,49 @@
+import { fetchData } from "@/lib/actions";
+import { getRelativeTime } from "@/lib/utils";
+import { MemoryType } from "@/types";
+import Image from "next/image";
 import React from "react";
 
-const page = () => {
-  return <div>page</div>;
+const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const memoryId = (await params).id;
+
+  const memory: MemoryType = await fetchData(`/posts/${memoryId}`);
+
+  return (
+    <div className="w-full max-w-[1440px] flex flex-col xl:flex-row gap-4 xl:gap-8 px-4 py-10 mx-auto">
+      <section className="w-full xl:w-1/2">
+        <Image
+          src={memory?.image}
+          alt="memory image"
+          width={300}
+          height={300}
+          className="w-full rounded-sm"
+        />
+      </section>
+
+      <section className="flex-1">
+        <article className="flex flex-col gap-3">
+          <h1 className="text-[#212623] text-3xl md:text-4xl">
+            {memory?.title}
+          </h1>
+
+          <p className="text-gray-700">{memory?.description}</p>
+
+          <p className="text-[#212623] text-lg">
+            Created by: {memory?.author.name} {memory?.author.lastname}
+          </p>
+
+          <span className="text-gray-700">
+            {getRelativeTime(memory?.createdAt)}
+          </span>
+        </article>
+
+        <div className="bg-[#212623] w-full h-[1px] my-4" />
+
+        <div>Comments comming soon</div>
+      </section>
+    </div>
+  );
 };
 
 export default page;

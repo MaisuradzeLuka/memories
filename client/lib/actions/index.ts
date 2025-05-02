@@ -35,7 +35,7 @@ export const fetchData = async (additionalUrl: string) => {
 
     const data = await res.json();
 
-    return { props: { data } };
+    return data;
   } catch (error: any) {
     throw new Error(`Something went wrong: ${error.message}`);
   }
