@@ -21,7 +21,7 @@ import { onFileChange } from "@/lib/utils";
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { postMemory } from "@/lib/actions";
+import { postMemoryData } from "@/lib/actions";
 import { redirect, useRouter } from "next/navigation";
 
 const AddMemory = () => {
@@ -40,7 +40,7 @@ const AddMemory = () => {
       return;
     }
 
-    setToken(token);
+    setToken(JSON.parse(token));
     const parsedUser = JSON.parse(user);
     setUserId(parsedUser._id);
   }, [router]);
@@ -88,7 +88,7 @@ const AddMemory = () => {
     setIsLoading(true);
     const newValues = { ...values, author: userId };
 
-    const res = await postMemory(newValues);
+    const res = await postMemoryData(newValues, token);
 
     setIsLoading(false);
     if (res === "SUCCESS") redirect("/");

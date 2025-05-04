@@ -1,17 +1,22 @@
 import { PostMemoryType, SignInFormType, SignUpFormType } from "@/types";
 
-const isDeployed = true;
+const isDeployed = false;
 
 const api_url = isDeployed
   ? process.env.NEXT_PUBLIC_API_URL
   : "http://localhost:5000";
 
-export const postMemory = async (body: PostMemoryType) => {
+export const postMemoryData = async (
+  body: PostMemoryType | string,
+  token: string | null,
+  url?: string
+) => {
   try {
-    const res = await fetch(`${api_url}/posts`, {
+    const res = await fetch(`${api_url}/posts${url}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });

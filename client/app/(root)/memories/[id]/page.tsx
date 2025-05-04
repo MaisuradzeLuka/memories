@@ -1,3 +1,4 @@
+import MemoryComments from "@/components/forms/MemoryComments";
 import { fetchData } from "@/lib/actions";
 import { getRelativeTime } from "@/lib/utils";
 import { MemoryType } from "@/types";
@@ -40,7 +41,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
         <div className="bg-[#212623] w-full h-[1px] my-4" />
 
-        <div>Comments comming soon</div>
+        <MemoryComments />
       </section>
     </div>
   );
