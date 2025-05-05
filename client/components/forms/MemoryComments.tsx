@@ -2,23 +2,33 @@
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Button from "../shared/Button";
-import { postMemoryData } from "@/lib/actions";
+import { fetchData, postMemoryData } from "@/lib/actions";
+import { CommentType } from "@/types";
 
-const MemoryComments = () => {
+const MemoryComments = ({ memoryId }: { memoryId: string }) => {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmited, setIsSubmited] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<string>("");
+  const [comments, setComments] = useState<CommentType[]>([]);
 
   useEffect(() => {
+    const fetchComments = async () => {
+      const res = await fetchData(`/posts/comments/${memoryId}`);
+
+      setComments(res);
+    };
+
+    fetchComments();
+
     const token = sessionStorage.getItem("token");
     const user = sessionStorage.getItem("user");
 
     if (!token || !user) return;
 
-    setToken(token);
+    setToken(JSON.parse(token));
     const parsedUser = JSON.parse(user);
     setUserId(parsedUser._id);
   }, []);
@@ -60,10 +70,13 @@ const MemoryComments = () => {
     if (!isSubmited) setIsSubmited(true);
 
     try {
-      const res = await postMemoryData(value, token, "/comments");
+      const res = await postMemoryData(
+        { comment: value, author: userId, memory: memoryId },
+        token,
+        "/comments"
+      );
 
       // if(res === 'SUCCESS')
-      console.log(res);
     } catch (error: any) {
       throw new Error(`Something went wrong: ${error.message}`);
     }
@@ -97,7 +110,11 @@ const MemoryComments = () => {
         </Button>
       </form>
 
-      <h3 className="text-lg mt-6 mb-4">Comments 0</h3>
+      <h3 className="text-lg mt-6 mb-4">Comments {comments.length}</h3>
+
+      {comments.map((comment) => (
+        <p key={comment.comment}>{comment.comment}</p>
+      ))}
     </div>
   );
 };

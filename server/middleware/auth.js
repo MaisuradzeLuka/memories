@@ -10,6 +10,6 @@ export const auth = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error);
+    res.status(402).json({ message: `Unauthorised: ${error.message}` });
   }
 };

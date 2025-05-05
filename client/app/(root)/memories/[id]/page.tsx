@@ -6,7 +6,7 @@ import Image from "next/image";
 import React from "react";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const memoryId = (await params).id;
+  const memoryId: string = (await params).id;
 
   const memory: MemoryType = await fetchData(`/posts/${memoryId}`);
 
@@ -18,7 +18,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           alt="memory image"
           width={300}
           height={300}
-          className="w-full rounded-sm"
+          className="w-full aspect-video rounded-sm"
         />
       </section>
 
@@ -41,7 +41,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
         <div className="bg-[#212623] w-full h-[1px] my-4" />
 
-        <MemoryComments />
+        <MemoryComments memoryId={memoryId} />
       </section>
     </div>
   );

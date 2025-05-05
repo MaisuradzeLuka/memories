@@ -88,7 +88,7 @@ const AddMemory = () => {
     setIsLoading(true);
     const newValues = { ...values, author: userId };
 
-    const res = await postMemoryData(newValues, token);
+    const res = await postMemoryData(newValues, token, "");
 
     setIsLoading(false);
     if (res === "SUCCESS") redirect("/");

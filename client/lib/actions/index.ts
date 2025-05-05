@@ -1,4 +1,9 @@
-import { PostMemoryType, SignInFormType, SignUpFormType } from "@/types";
+import {
+  CommentType,
+  PostMemoryType,
+  SignInFormType,
+  SignUpFormType,
+} from "@/types";
 
 const isDeployed = false;
 
@@ -7,9 +12,9 @@ const api_url = isDeployed
   : "http://localhost:5000";
 
 export const postMemoryData = async (
-  body: PostMemoryType | string,
+  body: PostMemoryType | CommentType,
   token: string | null,
-  url?: string
+  url: string
 ) => {
   try {
     const res = await fetch(`${api_url}/posts${url}`, {
