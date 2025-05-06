@@ -1,3 +1,5 @@
+"use server";
+
 import {
   CommentType,
   PostMemoryType,
@@ -17,7 +19,7 @@ export const postMemoryData = async (
   url: string
 ) => {
   try {
-    const res = await fetch(`${api_url}/posts${url}`, {
+    const res = await fetch(`${api_url}/${url}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

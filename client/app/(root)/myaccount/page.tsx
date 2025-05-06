@@ -113,7 +113,7 @@ const page = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-6 w-full text-[#212623] px-8 pt-4 pb-8"
+          className="flex flex-col gap-6 w-full text-primary-gray px-8 pt-4 pb-8"
         >
           <>
             <label

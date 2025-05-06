@@ -45,7 +45,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="flex justify-between py-5 px-10 bg-[#212623] text-white">
+    <nav className="flex justify-between py-5 px-10 bg-primary-gray text-white">
       <h1 className=" text-4xl font-semibold cursor-pointer ">
         <Link href="/">Memories</Link>
       </h1>
@@ -64,7 +64,7 @@ const Navbar = () => {
 
             <Link
               href="/myaccount"
-              className="flex items-center gap-2 border border-white rounded-full px-4 py-2 hover:bg-white hover:text-[#212623] transition"
+              className="flex items-center gap-2 border border-white rounded-full px-4 py-2 hover:bg-white hover:text-primary-gray transition"
             >
               <Image
                 src={user?.avatar || "/assets/placeholder_avatar.jpg"}
@@ -81,7 +81,7 @@ const Navbar = () => {
           <div>
             <Link
               href="/signin"
-              className="group flex items-center gap-2 text-md hover:border-white transition border border-[#212623] rounded-full px-3 py-[6px]"
+              className="group flex items-center gap-2 text-md hover:border-white transition border border-primary-gray rounded-full px-3 py-[6px]"
             >
               <span className="text-xl group-hover:hidden transition">
                 <PiUserCircleLight />
@@ -120,7 +120,7 @@ const Navbar = () => {
             <DropdownMenuItem>
               <Link
                 href="/myaccount"
-                className="flex items-center gap-2 border border-[#212623] rounded-full px-4 py-2 text-md hover:bg-[#212623] hover:text-white transition"
+                className="flex items-center gap-2 border border-primary-gray rounded-full px-4 py-2 text-md hover:bg-primary-gray hover:text-white transition"
               >
                 <span className="font-normal">Hi, {user?.name}</span>
               </Link>
@@ -140,7 +140,7 @@ const Navbar = () => {
         <div className="sm:hidden">
           <Link
             href="/signin"
-            className="group flex items-center gap-2 text-md hover:border-white transition border border-[#212623] rounded-full px-3 py-[6px]"
+            className="group flex items-center gap-2 text-md hover:border-white transition border border-primary-gray rounded-full px-3 py-[6px]"
           >
             <span className="text-xl group-hover:hidden transition">
               <PiUserCircleLight />

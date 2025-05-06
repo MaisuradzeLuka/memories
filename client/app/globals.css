@@ -2,4 +2,15 @@
 
 @theme {
   --color-green: #008000;
+  --color-primary-gray: #212623;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import MemoryRouter from "./routes/posts.js";
 import UsersRouter from "./routes/users.js";
+import CommentsRouter from "./routes/comments.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors());
 
 app.use("/posts", MemoryRouter);
 app.use("/users", UsersRouter);
+app.use("/comments", CommentsRouter);
 
 mongoose
   .connect(

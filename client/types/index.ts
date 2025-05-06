@@ -5,12 +5,6 @@ export type PostMemoryType = z.infer<typeof memorySchema> & {
   author: string;
 };
 
-export type CommentType = {
-  comment: string;
-  author: string;
-  memory: string;
-};
-
 export type MemoryType = {
   author: { _id: string; name: string; lastname: string };
   createdAt: string;
@@ -39,4 +33,17 @@ export type UserType = {
   lastname: string;
   avatar: string;
   bio: string;
+};
+
+export type CommentType = {
+  comment: string;
+  author: string;
+  memory: string;
+};
+
+export type CommentsType = {
+  comment: string;
+  author: UserType;
+  memory: string;
+  _id: string;
 };

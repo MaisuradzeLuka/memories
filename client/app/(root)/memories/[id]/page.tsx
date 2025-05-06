@@ -24,13 +24,13 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
       <section className="flex-1">
         <article className="flex flex-col gap-3">
-          <h1 className="text-[#212623] text-3xl md:text-4xl">
+          <h1 className="text-primary-gray text-3xl md:text-4xl">
             {memory?.title}
           </h1>
 
           <p className="text-gray-700">{memory?.description}</p>
 
-          <p className="text-[#212623] text-lg">
+          <p className="text-primary-gray text-lg">
             Created by: {memory?.author.name} {memory?.author.lastname}
           </p>
 
@@ -39,7 +39,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           </span>
         </article>
 
-        <div className="bg-[#212623] w-full h-[1px] my-4" />
+        <div className="bg-primary-gray w-full h-[1px] my-4" />
 
         <MemoryComments memoryId={memoryId} />
       </section>

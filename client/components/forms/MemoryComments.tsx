@@ -3,7 +3,8 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Button from "../shared/Button";
 import { fetchData, postMemoryData } from "@/lib/actions";
-import { CommentType } from "@/types";
+import { CommentsType, CommentType, UserType } from "@/types";
+import Image from "next/image";
 
 const MemoryComments = ({ memoryId }: { memoryId: string }) => {
   const [value, setValue] = useState("");
@@ -12,11 +13,11 @@ const MemoryComments = ({ memoryId }: { memoryId: string }) => {
   const [isSubmited, setIsSubmited] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<string>("");
-  const [comments, setComments] = useState<CommentType[]>([]);
+  const [comments, setComments] = useState<CommentsType[]>([]);
 
   useEffect(() => {
     const fetchComments = async () => {
-      const res = await fetchData(`/posts/comments/${memoryId}`);
+      const res = await fetchData(`/comments/${memoryId}`);
 
       setComments(res);
     };
@@ -73,10 +74,17 @@ const MemoryComments = ({ memoryId }: { memoryId: string }) => {
       const res = await postMemoryData(
         { comment: value, author: userId, memory: memoryId },
         token,
-        "/comments"
+        "comments"
       );
 
-      // if(res === 'SUCCESS')
+      if (res === "SUCCESS") {
+        setValue("");
+        setError("");
+        setIsSubmited(false);
+
+        const updatedComments = await fetchData(`/comments/${memoryId}`);
+        setComments(updatedComments);
+      }
     } catch (error: any) {
       throw new Error(`Something went wrong: ${error.message}`);
     }
@@ -85,7 +93,7 @@ const MemoryComments = ({ memoryId }: { memoryId: string }) => {
   };
 
   return (
-    <div className="w-full bg-[#212623] rounded-lg text-white px-3 py-4 md:px-6 md:py-8">
+    <div className="w-full bg-primary-gray rounded-lg text-white px-3 py-4 md:px-6 md:py-8">
       <form
         className="flex flex-col items-end gap-4"
         onSubmit={(e) => onSubmit(e)}
@@ -104,7 +112,7 @@ const MemoryComments = ({ memoryId }: { memoryId: string }) => {
         <Button
           type="submit"
           variant="outline"
-          classname="!bg-transparent hover:!bg-white border-white text-white hover:!text-[#212623] "
+          classname="!bg-transparent hover:!bg-white border-white text-white hover:!text-primary-gray "
         >
           {isLoading ? "Loading..." : "Comment"}
         </Button>
@@ -112,9 +120,27 @@ const MemoryComments = ({ memoryId }: { memoryId: string }) => {
 
       <h3 className="text-lg mt-6 mb-4">Comments {comments.length}</h3>
 
-      {comments.map((comment) => (
-        <p key={comment.comment}>{comment.comment}</p>
-      ))}
+      <div className="flex flex-col gap-6 max-h-[400px] overflow-y-scroll no-scrollbar">
+        {comments.map((comment) => (
+          <div key={comment._id} className="flex items-center gap-2">
+            <Image
+              width={40}
+              height={40}
+              alt="comment author"
+              src={comment.author.avatar}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+
+            <div>
+              <h4 className="text-sm font-semibold">
+                {comment.author.name} {comment.author.lastname}
+              </h4>
+
+              <p className="text-sm text-gray-300">{comment.comment}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
