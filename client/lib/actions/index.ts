@@ -7,7 +7,7 @@ import {
   SignUpFormType,
 } from "@/types";
 
-const isDeployed = true;
+const isDeployed = false;
 
 const api_url = isDeployed
   ? process.env.NEXT_PUBLIC_API_URL
