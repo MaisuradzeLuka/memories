@@ -7,7 +7,7 @@ import {
   SignUpFormType,
 } from "@/types";
 
-const isDeployed = true;
+const isDeployed = false;
 
 const api_url = isDeployed
   ? process.env.NEXT_PUBLIC_API_URL
@@ -38,7 +38,9 @@ export const postMemoryData = async (
 
 export const fetchData = async (additionalUrl: string) => {
   try {
-    const res = await fetch(`${api_url}${additionalUrl}`);
+    const res = await fetch(`${api_url}${additionalUrl}`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       const errorText = await res.text();
